@@ -1,5 +1,5 @@
 class VigenereCipheringMachine {
-    constructor() {
+    constructor(direct = true) {
         this.cipherTable = {
             a: "abcdefghijklmnopqrstuvwxyz",
             b: "bcdefghijklmnopqrstuvwxyza",
@@ -28,7 +28,9 @@ class VigenereCipheringMachine {
             y: "yzabcdefghijklmnopqrstuvwx",
             z: "zabcdefghijklmnopqrstuvwxy"
     };
+        this.direct = direct;
     }
+
     encrypt(cipherText, key) {
         if(arguments.length !== 2) {throw Error("Not enough arguments.")}
         cipherText = cipherText.toLowerCase();
@@ -46,7 +48,12 @@ class VigenereCipheringMachine {
                 counter += 1;
             }
         }
-        return encrypted.toUpperCase();
+        if (this.direct === true) {
+            return encrypted.toUpperCase();
+        } else {
+            return [...encrypted].reverse().join('').toUpperCase();
+        }
+
     }
 
     decrypt(encrypted, key) {
@@ -66,7 +73,11 @@ class VigenereCipheringMachine {
                 counter += 1;
             }
         }
-        return cipherText.toUpperCase();
+        if (this.direct === true) {
+            return cipherText.toUpperCase();
+        } else {
+            return [...cipherText].reverse().join('').toUpperCase();
+        }
     }
 }
 
