@@ -1,12 +1,72 @@
 class VigenereCipheringMachine {
-    encrypt() {
-        throw 'Not implemented';
-        // remove line with error and write your code here
+    constructor() {
+        this.cipherTable = {
+            a: "abcdefghijklmnopqrstuvwxyz",
+            b: "bcdefghijklmnopqrstuvwxyza",
+            c: "cdefghijklmnopqrstuvwxyzab",
+            d: "defghijklmnopqrstuvwxyzabc",
+            e: "efghijklmnopqrstuvwxyzabcd",
+            f: "fghijklmnopqrstuvwxyzabcde",
+            g: "ghijklmnopqrstuvwxyzabcdef",
+            h: "hijklmnopqrstuvwxyzabcdefg",
+            i: "ijklmnopqrstuvwxyzabcdefgh",
+            j: "jklmnopqrstuvwxyzabcdefghi",
+            k: "klmnopqrstuvwxyzabcdefghij",
+            l: "lmnopqrstuvwxyzabcdefghijk",
+            m: "mnopqrstuvwxyzabcdefghijkl",
+            n: "nopqrstuvwxyzabcdefghijklm",
+            o: "opqrstuvwxyzabcdefghijklmn",
+            p: "pqrstuvwxyzabcdefghijklmno",
+            q: "qrstuvwxyzabcdefghijklmnop",
+            r: "rstuvwxyzabcdefghijklmnopq",
+            s: "stuvwxyzabcdefghijklmnopqr",
+            t: "tuvwxyzabcdefghijklmnopqrs",
+            u: "uvwxyzabcdefghijklmnopqrst",
+            v: "vwxyzabcdefghijklmnopqrstu",
+            w: "wxyzabcdefghijklmnopqrstuv",
+            x: "xyzabcdefghijklmnopqrstuvw",
+            y: "yzabcdefghijklmnopqrstuvwx",
+            z: "zabcdefghijklmnopqrstuvwxy"
+    };
+    }
+    encrypt(cipherText, key) {
+        if(arguments.length !== 2) {throw Error("Not enough arguments.")}
+        cipherText = cipherText.toLowerCase();
+        key = key.toLowerCase();
+        let encrypted = '';
+        let counter = 0;
+
+        for (let i = 0; i < cipherText.length; i++) {
+            if (this.cipherTable[cipherText[i]]) {
+                let testingLetter = (i - counter) % key.length;
+                let keywordIndex = this.cipherTable["a"].indexOf(key[testingLetter]);
+                encrypted += this.cipherTable[cipherText[i]][keywordIndex];
+            } else {
+                encrypted += cipherText[i];
+                counter += 1;
+            }
+        }
+        return encrypted.toUpperCase();
     }
 
-    decrypt() {
-        throw 'Not implemented';
-        // remove line with error and write your code here
+    decrypt(encrypted, key) {
+        if(arguments.length !== 2) {throw Error("Not enough arguments.")}
+        encrypted = encrypted.toLowerCase();
+        key = key.toLowerCase();
+        let cipherText = '';
+        let counter = 0;
+
+        for (let i = 0; i < encrypted.length; i++) {
+            let testingLetter = (i - counter) % key.length;
+            let row = this.cipherTable[key[testingLetter]];
+            if (row.indexOf(encrypted[i]) !== -1) {
+                cipherText += this.cipherTable["a"][row.indexOf(encrypted[i])];
+            } else {
+                cipherText += encrypted[i];
+                counter += 1;
+            }
+        }
+        return cipherText.toUpperCase();
     }
 }
 
